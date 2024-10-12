@@ -1,0 +1,53 @@
+name: Deploy on push to master
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Install dependencies
+        run: |
+          go install github.com/rubenvannieuwpoort/billygoblog@latest
+          go install github.com/rubenvannieuwpoort/makeserver@latest
+
+      - name: Build blog
+        run: |
+          billygoblog . -o output
+
+      - name: Build portable server for Linux/ARM64
+        run: |
+          GOOS=linux GOARCH=arm64 makeserver output -o server
+
+      - name: Add private SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > /tmp/id_rsa
+          chmod 600 /tmp/id_rsa
+
+      - name: Backup previous version of the server
+        run: |
+          ssh -i /tmp/id_rsa -o StrictHostKeyChecking=no ruben@rubenvannieuwpoort.nl "mv /home/ruben/bin/server /home/ruben/bin/server.bak"
+
+      - name: Upload binary to server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          scp -i /tmp/id_rsa -o StrictHostKeyChecking=no server ruben@rubenvannieuwpoort.nl:/home/ruben/bin/server
+
+      - name: Restart server
+        run: |
+          ssh -i /tmp/id_rsa -o StrictHostKeyChecking=no ruben@rubenvannieuwpoort.nl "sudo systemctl restart server.service"
