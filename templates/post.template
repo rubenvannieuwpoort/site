@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="{{ index .Properties `description` }}">
+		<title>{{ index .Properties "title" }}</title>
+		<meta name="viewport" content="width=device-width">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="stylesheet" type="text/css" href="katex.min.css">
+		<link rel="shortcut icon" type="image/png" href="../favicon.png">
+	</head>
+	<body>
+		<article>
+<h1>{{ index .Properties "title" }}</h1>
+{{ renderMarkdown .Content}}
+		</article>
+	</body>
+</html>
