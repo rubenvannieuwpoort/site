@@ -20,16 +20,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          go install github.com/rubenvannieuwpoort/billygoblog@latest
-          go install github.com/rubenvannieuwpoort/makeserver@latest
+          make install_dependencies
 
-      - name: Build blog
+      - name: Build
         run: |
-          billygoblog . -o output
-
-      - name: Build portable server for Linux/ARM64
-        run: |
-          GOOS=linux GOARCH=arm64 makeserver output -o server
+          GOOS=linux GOARCH=arm64 make build
 
       - name: Add private SSH key
         env:
