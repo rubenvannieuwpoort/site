@@ -3,11 +3,11 @@ title: sRGB and gamma correction
 description: Many graphical applications display colors incorrectly because they do not do gamma correction. In this post I explain the problem and the solution.
 date: 2023-02-03
 template: post
-show: true
+show: false
 ---
 
 Today, most images and monitors use the sRGB color space. It is convenient that they use the same color space, since it means that the RGB values from an image can be fed directly to the display. However, there is a downside to using sRGB which not enough people realize: sRGB encodes the RGB components in a nonlinear way to provide a set of colors that is perceptually uniform.
-![Encoding vs linear intensity](./images/intensities.png "Encoding vs linear intensity" =606x118)
+![Encoding vs linear intensity](./images/intensities.png)
 
 The fact that sRGB is a nonlinear color space means that adding or multiplying sRGB colors is **wrong**. This means that things like linear interpolation, fade-outs, and bilinear filtering are wrong when they are done on sRGB colors. They should be done only on *linear* sRGB color representations.
 

@@ -143,7 +143,7 @@ And this is the fastest code I could write to calculate the Fibonacci numbers (i
 
 Note that **both axes are logarithmic**. In this type of graphs, graphs of the form $y = c x^d$ map to a straight line. Two graphs $y_a = c_a x^{d_a}$ and $y_b = c_b x^{d_b}$ have the same slope if the exponents $d_a$ and $d_b$ are the same. They have a vertical offset if the constants $c_a$ and $c_b$ are different.
 
-![Benchmarks of the different functions to calculate the Fibonacci numbers.](./images/fibonacci_benchmark.png "Benchmarks" =868x576)
+![Benchmarks of the different functions to calculate the Fibonacci numbers.](./images/fibonacci_benchmark.png)
 
 Some observations:
   - `fibonacci_naive` is so slow that it doesn't even make sense to compare it to the other methods

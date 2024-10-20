@@ -146,7 +146,7 @@ $\square$
 Sometimes, we want to compute the integral
 $$ \int p(x) q(x)\ \mu(x)\ \text{d}x $$
 
-for many different $p$ and $q$. Using theorem 6 and 8 and a root-finding method, we can compute a different quadrature rule for every $q$. The inconvenient thing about this method is that the quadrature points $x_1, x_2, ... will be different for every $q$.
+for many different $p$ and $q$. Using theorem 6 and 8 and a root-finding method, we can compute a different quadrature rule for every $q$. The inconvenient thing about this method is that the quadrature points $x_1, x_2, ...$ will be different for every $q$.
 
 In [2], it is proposed to instead pick one set of quadrature points and re-use these for every $q$. This means we have to use more quadrature points per $q$, but since we can use the same set of quadrature points we only have to evaluate $p$ on this one set, which is more efficient in the end. It also means that we can use the 'simple' way of computing quadrature rules outlined in the section 'quadrature rules, the easy way'.
 
