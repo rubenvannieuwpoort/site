@@ -333,12 +333,12 @@
 					<h1 class="masthead-title">Ruben van Nieuwpoort<span>'s blog</span></h1>
 				</header>
 				<div class="content list">
-					{{- range (index .Tree "posts") }}
-					{{- if (index .Properties "show") }}
-						<div class="list-item">
-							<h2 class="list-post-title"><a href="{{ index .Properties `uri` }}">{{ index .Properties "title" }}</a></h2>
-							<div class="list-post-date">{{ (index .Properties "date").Format "2006-01-02" }}</div>
-						</div>
+					{{- range (sortBy "date" (index .Tree "posts") false) }}
+					{{- if eq (index .Properties "show") "true" }}
+					<div class="list-item">
+						<h2 class="list-post-title"><a href="{{ index .Properties `uri` }}">{{ index .Properties "title" }}</a></h2>
+						<div class="list-post-date">{{ index .Properties "date" }}</div>
+					</div>
 					{{- end}}
 					{{- end}}
 					<div class="wrapper-footer">
