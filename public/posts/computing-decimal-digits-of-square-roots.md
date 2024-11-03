@@ -6,8 +6,8 @@ template: post
 show: true
 ---
 
-We define the integer square root $n$ of a number $N \in \mathbb{N}_0$ as the largest integer $n$ such that $n^2 \leq N$ (so we have $n = \lfloor \sqrt{N} \rfloor$). For given numbers $n$ and $N$ it easy to check if $n$ is the integer square root of $N$, because in that case we have
-$$ n^2 \leq N < (n + 1)^2> $$
+We define the integer square root $n$ of a number $N \in \mathbb{N}_0$ as the largest integer $n$ such that $n^2 \leq N$ (so we have $n = \lfloor \sqrt{N} \rfloor$). For given numbers $n$ and $N$ it's easy to check if $n$ is the integer square root of $N$, because in that case we have
+$$ n^2 \leq N < (n + 1)^2 $$
 
 The difference of the square of two consecutive numbers $k, k + 1$ is the $k$th odd number:
 $$ (k + 1)^2 - k^2 = 2k + 1 $$
