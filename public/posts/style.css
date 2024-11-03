@@ -60,13 +60,12 @@ main {
 	display: grid;
 	grid-template-columns: 1fr 38rem 14rem 1fr;
 	grid-template-areas: ". main . .";
-	margin-top: 2rem;
 	height: 100%;
 }
 
 article {
 	grid-area: main;
-	padding: 0 1.5rem;
+	padding: 2rem 1.5rem 4rem 1.5rem;
 }
 
 aside {
