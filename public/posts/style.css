@@ -80,7 +80,7 @@ aside {
 /* text styling */
 
 html {
-	font: normal normal normal 17px/1.4 "Crimson", Georgia, serif;
+	font: normal normal normal 16px/1.5 "Crimson", Georgia, serif;
 }
 
 h1 {
@@ -119,6 +119,12 @@ strong {
 a {
 	color: #125B97;
 	text-decoration: none;
+}
+
+/* avoid line breaks between equation and the following dot */
+.katex {
+    content: "\00A0"; /* Non-breaking space */
+    white-space: nowrap;
 }
 
 
