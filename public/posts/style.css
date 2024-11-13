@@ -129,8 +129,8 @@ a {
 
 /* code blocks */
 
-pre { font-size: 93%; padding: 0.5em; background-color: rgba(0, 0, 0, 0.05); overflow: auto; }
-code { font-family: monospace; font-size: 93%; tab-size: 4; }
+pre { padding: 0.5em; background-color: rgba(0, 0, 0, 0.05); overflow: auto; }
+code { font-family: monospace; font-size: .9rem; tab-size: 4; }
 
 
 /* tables */
