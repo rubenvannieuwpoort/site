@@ -211,7 +211,7 @@ div28:
 
 ## Round-down method
 
-The following theorem powers the **round-down method**, which was introduced in TODO and TODO independently. I present the result in a forum analogous to theorem 2.
+The following theorem powers the **round-down method**. I present the result in a forum analogous to theorem 2.
 
 **Theorem 3**: *Let $d$, $m$, $\ell$ be nonnegative integers with $d \neq 0$ and*
 $$ 2^{N + \ell} -2^\ell \leq d \cdot m \leq 2^{N + \ell} \tag{2} $$
@@ -220,10 +220,18 @@ $$ 2^{N + \ell} -2^\ell \leq d \cdot m \leq 2^{N + \ell} \tag{2} $$
 
 **Proof**: Multiplying the inequality by $\frac{n + 1}{d \cdot 2^{N + \ell}}$ we get $\frac{n}{d} + \frac{1}{d} \cdot (1 - \frac{n + 1}{2^N}) \leq \frac{m(n + 1)}{2^{N + \ell}} \leq \frac{n + 1}{d}$. Since $n < 2^N$ we have $\frac{n}{d} \leq \frac{n}{d} + \frac{1}{d} \cdot (1 - \frac{n + 1}{2^N})$ and the condition of lemma 1 is satisfied. So we have $\lfloor \frac{m(n + 1)}{2^{N + \ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$ for all integers $n$ with $0 \leq n < 2^N$.
 
+$\square$
+
 The result is fairly straightforward to use. However, we need to take care of overflows again. There are multiple strategies to avoid overflow:
-  1. Use a saturating increment on $n$. This can usually be done with an increment, followed by a single instruction that subtracts the overflow bit.
-  2. Compute the full $2N$-bit product $mn$ (not just the high $N$-bit word), and add $m$ to that.
-  3. If the target architecture has a fused-multiply-add instruction, use that to evaluate $m(n + 1)$ as $mn + m$.
+  1. Compute the full $2N$-bit product $mn$ (not just the high $N$-bit word), and add $m$ to that.
+  2. If the target architecture has a fused-multiply-add instruction, use that to evaluate $m(n + 1)$ as $mn + m$.
+  3. Use a saturating increment on $n$. This can usually be done with an increment, followed by a single instruction that subtracts the overflow bit.
+
+The first approach is the most obvious one. The second approach was suggested in TODO, and the third one in TODO. I suggest going with the third approach, since it seems to be reasonably portable between instruction sets, and slightly more efficient than the other approaches.
 
 
-Which 
+### Correctness of the saturating-increment approach
+
+When we use saturating-increment approach, we calculate $\lfloor \frac{m(n + 1)}{2^{N + \ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$ for every $n < 2^N - 1$. For $n = 2^N - 1$, we don't increment, so we effectively calculate $\lfloor \frac{mn}{2^{N + \ell}} \rfloor = \lfloor \frac{2^N - 2}{d} \rfloor$. This seems wrong, but it's correct as long as $d$ is an uncooperative divisor. This is OK, since if $d$ is a cooperative divisor, we would like to use the round-up method anyway.
+
+We only have $\lfloor \frac{2^N - 2}{d} \rfloor \neq \lfloor \frac{2^N - 1}{d} \rfloor$ when $d$ is a divisor of $2^N - 1$. But in this case, we have $2^N \equiv 1 (\text{mod}\ d)$, which means that $2^{N + \ell} + 2^\ell$ equals $-2^\ell + 2^\ell$ modulo $d$. So $d$ divides $2^{N + \ell} + 2^\ell$, and the condition for theorem 2 holds.
