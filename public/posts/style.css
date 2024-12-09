@@ -71,6 +71,7 @@ article {
 aside {
 	position: absolute;
 	margin-left: 38rem;
+	margin-top: -4rem;
 	width: 14rem;
 	font-size: .85rem;
 }
@@ -174,6 +175,7 @@ img {
 		padding: .5rem;
 		position: relative;
 		margin-left: 0;
+		margin-top: 0;
 		width: inherit;
 	}
 }
