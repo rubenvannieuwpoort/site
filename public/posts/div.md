@@ -211,7 +211,7 @@ div28:
 
 ## Round-down method
 
-The following theorem powers the **round-down method**. I present the result in a forum analogous to theorem 2.
+The following theorem powers the **round-down method**. I present the result in a form analogous to theorem 2.
 
 **Theorem 3**: *Let $d$, $m$, $\ell$ be nonnegative integers with $d \neq 0$ and*
 $$ 2^{N + \ell} -2^\ell \leq d \cdot m \leq 2^{N + \ell} \tag{2} $$
