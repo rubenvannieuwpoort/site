@@ -235,3 +235,5 @@ The first approach is the most obvious one. The second approach was suggested in
 When we use saturating-increment approach, we calculate $\lfloor \frac{m(n + 1)}{2^{N + \ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$ for every $n < 2^N - 1$. For $n = 2^N - 1$, we don't increment, so we effectively calculate $\lfloor \frac{mn}{2^{N + \ell}} \rfloor = \lfloor \frac{2^N - 2}{d} \rfloor$. This seems wrong, but it's correct as long as $d$ is an uncooperative divisor. This is OK, since if $d$ is a cooperative divisor, we would like to use the round-up method anyway.
 
 We only have $\lfloor \frac{2^N - 2}{d} \rfloor \neq \lfloor \frac{2^N - 1}{d} \rfloor$ when $d$ is a divisor of $2^N - 1$. But in this case, we have $2^N \equiv 1 (\text{mod}\ d)$, which means that $2^{N + \ell} + 2^\ell$ equals $-2^\ell + 2^\ell$ modulo $d$. So $d$ divides $2^{N + \ell} + 2^\ell$, and the condition for theorem 2 holds.
+
+TODO: examples
