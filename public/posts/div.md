@@ -1,16 +1,23 @@
 ---
-title: Division by constant unsigned integers
+title: Division by constant integers
 description: Most modern processors have an integer divide instruction which is relatively slow compared to the other arithmetic operations. When the divisor is known at compile-time or the same divisor is used for many divisions, it is possible to transform the single division to a series of instructions which execute faster. Most compilers will optimize divisions in this way. In this article, I give an overview of the existing techniques for unsigned integers.
 date: 2020-08-28
 template: post
 show: false
 ---
 
-This post is a survey of the methods to optimize unsigned integer division. It largely follows the approach and terminology in the excellent articles [TODO] by ridiculous_fish, but aims to be slighly more rigorous and concise.
+This post is a survey of the methods to optimize integer division.
 
-< These articles were written by ridiculous_fish, the author of the [libdivide](https://libdivide.com) library, a C++ header-only library which uses various methods to speed up division, including the methods described in this post.
+The methods in this post originate from the classic 1991 paper ["Division by Invariant Integers using Multiplication" by Torbjörn Granlund and Peter L. Montgomery](https://gmplib.org/~tege/divcnst-pldi94.pdf). In particular, the paper presents what in this post is called the "round-up method". This method was further popularized by Henry S. Warren in his 2002 book "Hacker's Delight". In the 2005 paper ["N-Bit Unsigned Division Via N-Bit Multiply-Add" by Arch D. Robinson](https://www.computer.org/csdl/proceedings-article/arith/2005/23660131/12OmNyQYt7U) presents what in this post is called the "round-down method". In [episode I](https://ridiculousfish.com/blog/posts/labor-of-division-episode-i.html) and [episode III](https://ridiculousfish.com/blog/posts/labor-of-division-episode-iii.html) of the series of articles cleverly named "The Labor of Division", ridiculous_fish both independently discovers the round-down method, and clearly describes both methods.
 
-First, the round-up method is presented, which shows that for every $N$-bit divisor $d > 0$ there is a constant $m$ so that the upper bits of $mn$ equal $\lfloor \frac{n}{d} \rfloor$ for every $N$-bit unsigned $n$. For certain "uncooperative" divisors the constant $m$ will not fit in $N$ bits, in which case the method is feasible but less efficient. To improve the efficiency, the round-down method is presented, which is similar to the round-up method but more efficient for uncooperative divisors.
+< ridiculous_fish is the author of the [libdivide](https://libdivide.com) library, a C++ header-only library which uses various methods to speed up division, including the methods described in this post.
+
+What does this post add to the already existing literature? For one, it serves as a reference, combining the results in a rigorous and structured way. I am presenting the results that power the different methods (theorem 2 and 3) in a slightly simpler and more unified way that is consistent with the original presentation in the paper "Division by Invariant Integers using Multiplication".
+
+
+### Overview
+
+First, the round-up method is presented, which shows that for every $N$-bit divisor $d > 0$ there is a constant $m$ so that the upper bits of $mn$ equal $\lfloor \frac{n}{d} \rfloor$ for every $N$-bit unsigned $n$. For certain "uncooperative" divisors the constant $m$ will not fit in $N$ bits, in which case the method is feasible but less efficient. To improve the efficiency, the round-down method is presented, which is similar to the round-up method but more efficient for uncooperative divisors. TODO: for singed integers
 
 
 ## Intuition
@@ -81,7 +88,7 @@ So the optimized version of the function is
 
 ```
 uint32_t div9(uint32_t n) {
-	return (uint64_t(954437177) * n) >> 33;
+	return (((uint64_t)954437177) * n) >> 33;
 }
 ```
 
@@ -224,12 +231,17 @@ $$ 2^{N + \ell} -2^\ell \leq d \cdot m \leq 2^{N + \ell} \tag{2} $$
 
 $\square$
 
-The result is fairly straightforward to use. However, we need to take care of overflows again. There are multiple strategies to avoid overflow:
-  1. Compute the full $2N$-bit product $mn$ (not just the high $N$-bit word), and add $m$ to that.
-  2. If the target architecture has a fused-multiply-add instruction, use that to evaluate $m(n + 1)$ as $mn + m$.
-  3. Use a saturating increment on $n$. This can usually be done with an increment, followed by a single instruction that subtracts the overflow bit.
+The computation of $m$ is very similar to the round-up method: We take $\ell = \lfloor \log_2(d) \rfloor$ and compute $m = \lfloor \frac{2^{N + \ell}}{d} \rfloor$. The difference is of course that we round $m$ *down* instead of up (which can hardly be a surprise, given the name of the method). So it's only the increment that can overflow.
 
-The first approach is the most obvious one. The second approach was suggested in TODO, and the third one in TODO. I suggest going with the third approach, since it seems to be reasonably portable between instruction sets, and slightly more efficient than the other approaches.
+For the evaluation of the expression $m(n + 1)$ we do need to be careful to avoid overflows again. It can happen that $n = 2^N - 1$, and in this case naively computing $n + 1$ will overflow. The product $m(n + 1)$ needs to be computed with a "widening" multiplication as before (sometimes you can get away with a "compute high word of product" instruction, if the target architecture has one).
+
+Possible strategies to avoid overflow include:
+  1. Compute the full $2N$-bit product $mn$ (not just the high $N$-bit word), and add $m$ to that.
+  2. Use a saturating increment on $n$. The implementation is architecture-dependent, but it can usually be done with an increment, followed by a single instruction that subtracts the overflow bit.
+
+< In the paper "N-Bit Unsigned Division Via N-Bit Multiply-Add", it is suggested to implement the first method with a fused-multiply-add operation. This works fine if there is such an instruction on the target architecture, like on the Itanium architecture which is used in the article. However, most architectures do not have such an instruction, so I will not go into this approach any further.
+
+In most cases the second approach seems better. The exception is when the division is done on $N$-bit integers but the target architecture is $2N$-bit (typically this happens when dividing 32-bit integers on a 64-bit procesors). In this case, we can just use a $2N$-bit word to store $n + 1$ without worrying about overflow.
 
 
 ### Correctness of the saturating-increment approach
@@ -238,4 +250,108 @@ When we use the saturating-increment approach, we calculate $\lfloor \frac{m(n +
 
 We only have $\lfloor \frac{2^N - 2}{d} \rfloor \neq \lfloor \frac{2^N - 1}{d} \rfloor$ when $d$ is a divisor of $2^N - 1$. But in this case, we have $2^N \equiv 1 (\text{mod}\ d)$, which means that $2^{N + \ell} + 2^\ell$ equals $-2^\ell + 2^\ell$ modulo $d$. So $d$ divides $2^{N + \ell} + 2^\ell$, and the condition for theorem 2 holds.
 
-TODO: examples
+
+### Example
+
+Checking for overflow is a bit messy in pure C. I'll assume we use GCC and use the `__builtin_uadd_overflow` builtin for this. Details can be found [here](https://gcc.gnu.org/onlinedocs/gcc/Integer-Overflow-Builtins.html). To check for overflow, we use it like this:
+```
+// add unsigned integers x and y
+if (__builtin_uadd_overflow(x, y, &result)) {
+	// there was an overflow, result equals the low 32 bits of x + y
+} else {
+	// there was no overflow, result equals x + y
+}
+```
+
+We'll now implement an optimized version of:
+```
+uint32_t div7(uint32_t n) {
+	return n / 7;
+}
+```
+
+With $N = 32$ we compute $\ell = \lfloor \log_2(7) \rfloor = 2$. We test if $d = 7$ is a cooperative divisor by checking if $\text{mod}_{2^{32}}(d \cdot m) < 2^\ell$ with $m = \lceil \frac{2^{34}}{7} \rceil$. The left-hand side is 5 and the right-hand side is 4, so $d = 7$ is an uncooperative divisor.
+
+So we use the round-down method and set $m = \lfloor \frac{2^{34}}{7} \rfloor$ so that $\lfloor \frac{m(n + 1)}{2^{34}} \rfloor = \lfloor \frac{n}{7} \rfloor$.
+
+Now, as discussed in the previous section, when $n = 2^N - 1$ we have $\lfloor \frac{mn}{2^{34}} \rfloor = \lfloor \frac{m(n + 1)}{2^{34}} \rfloor = \lfloor \frac{n}{7} \rfloor$ so that we can use a saturating increment to compute $mn$ when $n = 2^N - 1$ and $m(n + 1)$ otherwise.
+
+So we can write an optimized version:
+```
+uint32_t div7(uint32_t n) {
+	if (__builtin_uadd_overflow(n, 1, &n)) {
+		n--;
+	}
+	return (((uint64_t)2454267026) * n) >> 34;
+}
+```
+
+RISC-V:
+```
+div7:
+	# saturating increment a0
+	sltiu   a5,a0,-1
+	add     a0,a5,a0
+
+	# get high word of m * (n + 1)
+	# (or m * n when n = 2^32 - 1)
+	li a4, 2454267026
+	mulhu   a0,a0,a4
+
+	# shift right
+	srli    a0,a0,2
+
+	ret
+```
+
+In x86_64 we get
+```
+div7:
+	# move first arg (n) to eax
+	mov eax, edi
+
+	# saturating increment on n
+	add eax, 1
+	sbb eax, 0
+
+	# get high word of m * (n + 1)
+	# (or m * n when n = 2^32 - 1)
+	mov edx, 2454267026
+	mul rax, rdx
+
+	# shift right
+	shr rax, 34
+
+	ret
+```
+
+However, since `x64_64` is a 64-bit architecture, we can use a 64-bit word for `n + 1` without having to worry for overflow. 
+```
+uint32_t div7(uint32_t n32) {
+	uint64_t n = n32;
+	return (((uint64_t)2454267026) * (n + 1)) >> 34;
+}
+```
+
+This makes the resulting assembly ever so slightly more elegant (and I suspect more efficient as well, although I haven't benchmarked it):
+```
+div7:
+	# move first arg (n) to eax/rax
+	mov eax, edi
+
+	# increment rax/n
+	add rax, 1
+
+	# load m * (n + 1) into rax
+	mov edx, 2454267026
+	mul rax, rdx
+
+	# shift rax right
+	shr rax, 34
+
+	ret
+```
+
+## Signed integers
+
+TODO
