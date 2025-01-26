@@ -149,3 +149,35 @@ Some observations:
   - `fibonacci_naive` is so slow that it doesn't even make sense to compare it to the other methods
   - `fibonacci_linear` is much better, but it is still asymptotically slower than `fibonacci_matrix` and `fibonacci_fast` (although for small `n` -- say, smaller than 250, it might actually be faster)
   - `fibonacci_fast` is roughly 2.5 times as fast as `fibonacci_matrix`
+
+
+## Update (2024-01-26)
+
+The Youtube channel [Sheafification of G](https://www.youtube.com/@SheafificationOfG) published several video's on efficiently calculating the Fibonacci numbers. At the time of writing, there are three videos which can be found in [this playlist](https://www.youtube.com/playlist?list=PL3JI_Wj02ehVoNlvqVbCrxdwE2sWmDO8O). In the second video, it is mentioned how one commenter gave a tiny Python implementation that, surprisingly, is faster than the C++ implementation from the first video. Here is the Python implementation:
+```
+def fibonacci(n: int) -> int:
+    def fib_pair(k: int) -> tuple[int, int]:
+        if k <= 1:
+            return (k, 1)
+        fh, fh1 = fib_pair(k >> 1)
+        fk = fh * ((fh << 1) - fh)
+        fk1 = fh1**2 + fh**2
+        if k & 1:
+            fk, fk1 = fk1, fk + fk1
+        return (fk, fk1)
+    return fib_pair(n)[0]
+```
+
+This is just a manual transcription of the code that is shown in the video at [0:41](https://youtu.be/02rh1NjJLI4&t=42) with some slight modification in whitespace. I can't actually find where the code comes from, and for some reason you can't search in Youtube comments...
+
+Notes:
+  - `fk` is $F_k$.
+  - `fh` is $F_{\lfloor \frac{k}{2} \rfloor}$, I guess the "h" stands for "half".
+  - `fk1` is $F_{k + 1}$ and `fh1` is $F_{\lfloor \frac{k}{2} \rfloor + 1}$.
+
+I quickly compared this to the code I gave in this post and was pleased to see that this code uses the same idea, although I have to admit that this code is both more elegant and runs noticeably quicker. The differences are:
+  - It doesn't use the "accumulator" approach, but uses a more elegant recursive approach.
+  - It uses the recursion for $F_{k + 1}$ and $F_{2k + 1}$ instead of for $F_k$ and $F_{2k - 1}$ like I do.
+  - It uses the exponentation operator (`**`) instead of multiplication, and does some algebraic tricks to write `fh**2 + 2 * fh * (fh1 - fh)` as `fh * ((fh << 1) - fh)` to get rid of one multiplication.
+
+All in all a worthy winner! I always believed that the "accumulator" approach was the fastest way to implement a Russian-peasant-style algorithm, and it's interesting to see this proven wrong.
