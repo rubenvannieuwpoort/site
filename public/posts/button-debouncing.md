@@ -3,7 +3,7 @@ title: Button debouncing
 description: How to debounce a button.
 date: 2023-02-22
 template: post
-show: true
+show: false
 ---
 
 If you have any kind of digital system that reads the state of a mechanical button, you may run into the issue of "button bouncing": When the user presses or releases the button, the system detects it as a very rapid succession of a press, release, press, ... This can either be due to the button physically bouncing, or due to electrical noise. There is a standard solution called "button debouncing". It is not super complicated, but not completely trivial either, so I consider it worthy of documenting here for future reference.
