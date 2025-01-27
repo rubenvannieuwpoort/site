@@ -181,3 +181,21 @@ I quickly compared this to the code I gave in this post and was pleased to see t
   - It uses the exponentation operator (`**`) instead of multiplication, and does some algebraic tricks to write `fh**2 + 2 * fh * (fh1 - fh)` as `fh * ((fh << 1) - fh)` to get rid of one multiplication.
 
 All in all a worthy winner! I always believed that the "accumulator" approach was the fastest way to implement a Russian-peasant-style algorithm, and it's interesting to see this proven wrong.
+
+
+## Update (2024-01-27)
+
+After thinking about this a bit more, I came up with the following version with is both shorter and faster:
+
+```
+def fibonacci_faster(n: int) -> int:
+    fk1, fk = 1, 0
+    for b in range(n.bit_length() - 1, -1, -1):
+        f2k1, f2k = fk**2 + fk1**2, fk * (fk + (fk1 << 1))
+        fk1, fk = (f2k, f2k + f2k1) if n & (1 << b) else (f2k1, f2k)
+    return fk
+```
+
+It works by calculating either $F_{2k}$, $F_{2k+1}$ or $F_{2k + 1}$, $F_{2k + 2}$, based on if the `b`th bit of the binary expansion of `n` is set. After the $m$th iteration, `fk` will equal $F_k$, where $k$ is the number that consists of the $m$ most significant bits of `n`.
+
+Admittedly, it's not as nice to read as the rescursive version.
