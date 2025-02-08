@@ -198,4 +198,4 @@ def fibonacci_faster(n: int) -> int:
 
 It works by calculating either $F_{2k}$, $F_{2k+1}$ or $F_{2k + 1}$, $F_{2k + 2}$, based on if the `b`th bit of the binary expansion of `n` is set. After the $m$th iteration, `fk` will equal $F_{n_m}$, where $n_m$ is the number that consists of the $m$ most significant bits of `n`.
 
-Admittedly, it's not as nice to read as the rescursive version.
+Admittedly, it's not as nice to read as the recursive version.
