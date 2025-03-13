@@ -188,7 +188,7 @@ Following the procedure as before, we set $\ell = \lfloor \log_2(28) \rfloor = 4
 
 So we note that we have an even uncooperative divisor and set $n' = \lfloor \frac{n}{4} \rfloor$. We now need to divide $n'$, a $30$-bit number, by $7$. If $7$ would be a cooperative divisor, then $2^k \cdot 7$ would be too, so we know that $7$ is an uncooperative divisor. So we set $N' = 30$, $\ell = \lceil \log_2(7) \rceil = 3$ and get $m = \lceil \frac{2^{N' + \ell}}{d} \rceil = 1227133514$.
 
-Note that $m$ is even, so we can use $\frac{m}{2}$ instead and decrease $\ell$. We get $m = 613566757$, $N = 30$, $\ell = 2$. The optimized version of the function is
+Note that $m$ is even, so we can use $\frac{m}{2}$ instead and decrease $\ell$. We get $m = 613566757$, $N = 30$, $\ell = 2$. The optimized version of the function is as follows:
 ```
 uint32_t div28(uint32_t n) {
 	n = n >> 2;
@@ -263,7 +263,7 @@ if (__builtin_uadd_overflow(x, y, &result)) {
 }
 ```
 
-We'll now implement an optimized version of:
+We'll now implement an optimized version of the following function.
 ```
 uint32_t div7(uint32_t n) {
 	return n / 7;
@@ -325,7 +325,7 @@ div7:
 	ret
 ```
 
-However, since `x64_64` is a 64-bit architecture, we can use a 64-bit word for `n + 1` without having to worry for overflow. 
+Since `x64_64` is a 64-bit architecture, we can use a 64-bit word for `n + 1` without having to worry about overflow. 
 ```
 uint32_t div7(uint32_t n32) {
 	uint64_t n = n32;
