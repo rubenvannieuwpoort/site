@@ -190,9 +190,14 @@ After thinking about this a bit more, I came up with the following version with 
 ```
 def fibonacci_faster(n: int) -> int:
     fk1, fk = 1, 0
-    for b in range(n.bit_length() - 1, -1, -1):
-        f2k1, f2k = fk**2 + fk1**2, fk * (fk + (fk1 << 1))
-        fk1, fk = (f2k, f2k + f2k1) if n & (1 << b) else (f2k1, f2k)
+    for b in range(n.bit_length() - 1,
+                   -1, -1):
+        f2k1, f2k = (fk**2 + fk1**2,
+            fk * (fk + (fk1 << 1)))
+        if n & (1 << b):
+            fk1, fk = f2k, f2k + f2k1
+        else:
+            fk1, fk = f2k1, f2k
     return fk
 ```
 
