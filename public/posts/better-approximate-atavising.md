@@ -16,7 +16,7 @@ Nice! However, it seemed to me that a much simpler method would also work:
 4. If the distance $|D' - T|$ is less than $|D - T|$, set $C \leftarrow C'$
 5. Go to step 1
 
-The distance function is found by applying a simple blurring kernel, gamma encoding, and taking the sum of the squares of the difference for each pixel. Because both the blurring kernel and computing the next Game of Life configuration only depend on pixels that are near the flipped pixel, this can be done reasonably efficiently.
+The distance function applies a simple blurring kernel, gamma encoding, and taking the sum of the squares of the difference for each pixel. Because both the blurring kernel and computing the next Game of Life configuration only depend on pixels that are near the flipped pixel, we can get away with only computing the distance over a small section around the flipped pixel, and the whole process is reasonably efficient even without optimizations.
 
 I wrote a simple C program that does this and displays the result using SDL. The code can be found on [GitHub](https://github.com/rubenvannieuwpoort/conlife). If I run the program for this target image:
 
