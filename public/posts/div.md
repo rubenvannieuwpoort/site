@@ -1,9 +1,9 @@
 ---
 title: Division by constant integers
 description: Most modern processors have an integer divide instruction which is relatively slow compared to the other arithmetic operations. When the divisor is known at compile-time or the same divisor is used for many divisions, it is possible to transform the single division to a series of instructions which execute faster. Most compilers will optimize divisions in this way. In this article, I give an overview of the existing techniques for unsigned integers.
-date: 2020-08-28
+date: 2025-04-07
 template: post
-show: false
+show: true
 ---
 
 This post is a survey of the methods to optimize integer division.
@@ -17,7 +17,7 @@ What does this post add to the already existing literature? For one, it serves a
 
 ### Overview
 
-First, the round-up method is presented, which shows that for every $N$-bit divisor $d > 0$ there is a constant $m$ so that the upper bits of $mn$ equal $\lfloor \frac{n}{d} \rfloor$ for every $N$-bit unsigned $n$. For certain "uncooperative" divisors the constant $m$ will not fit in $N$ bits, in which case the method is feasible but less efficient. To improve the efficiency, the round-down method is presented, which is similar to the round-up method but more efficient for uncooperative divisors. TODO: for singed integers
+First, the round-up method is presented, which shows that for every $N$-bit divisor $d > 0$ there is a constant $m$ so that the upper bits of $mn$ equal $\lfloor \frac{n}{d} \rfloor$ for every $N$-bit unsigned $n$. For certain "uncooperative" divisors the constant $m$ will not fit in $N$ bits, in which case the method is feasible but less efficient. To improve the efficiency, the round-down method is presented, which is similar to the round-up method but more efficient for uncooperative divisors. Then, we will discuss how the method can be applied to signed integers.
 
 
 ## Intuition
@@ -56,9 +56,11 @@ So if we can find $\ell$, $m$ satisfying $(1)$, we can compute $\lfloor \frac{n}
 
 < If we know that $m$ is not a power of two, we have $\lceil \frac{2^{N + \ell}}{d} \rceil = \lfloor \frac{2^{N + \ell}}{d} \rfloor + 1$, where the latter might be easier to evaluate.
 
-If $\ell > \log_2(d)$, the interval will contain $d$ or more successive integers and we can be certain that the interval contains a multiple of $d$. Since $d \cdot \lceil \frac{2^{N + \ell}}{d} \rceil$ is just the first multiple of $d$ that is at least as large as $2^{N + \ell}$, we can always set $m = \lceil \frac{2^{N + \ell}}{d} \rceil$; if there an $m$ exists that satisfies $(1)$, this $m$ will do so too.
+If $\ell \geq \log_2(d)$, the interval will contain $d$ or more successive integers and we can be certain that the interval contains a multiple of $d$. Since $d \cdot \lceil \frac{2^{N + \ell}}{d} \rceil$ is just the first multiple of $d$ that is at least as large as $2^{N + \ell}$, we can always set $m = \lceil \frac{2^{N + \ell}}{d} \rceil$; if there an $m$ exists that satisfies $(1)$, this $m$ will do so too.
 
-On the other hand, we would like to have $m < 2^N$ so that $m$ fits in an $N$-bit word, but this requires $\ell < \log_2(d)$. So, this we can't guarantee this, and indeed we see that for some divisors $d$ there only exist $m$, $\ell$ with $m > 2^N$.
+**Corollary 3**: *If $\ell \geq \log_2(d)$ and $m = \lceil \frac{2^{N + \ell}}{d} \rceil$, then $\lfloor \frac{mn}{2^{N + \ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$ for every integer $n$ with $0 \leq n < 2^N$*.
+
+However, we would like to have $m < 2^N$ so that $m$ fits in an $N$-bit word, but this requires $\ell < \log_2(d)$. So, this we can't guarantee this, and indeed we see that for some divisors $d$ there only exist $m$, $\ell$ with $m > 2^N$.
 
 So, concretely, how can we find $m$ and $\ell$? First we pick $\ell = \lfloor \log_2(d) \rfloor$ and set $m = \lceil \frac{2^{N + \ell}}{d} \rceil$. For $m$ calculating this way we have $m < 2^N$, so we have to check that it satisfies $(1)$.
 
@@ -352,6 +354,192 @@ div7:
 	ret
 ```
 
+
 ## Signed integers
 
-TODO
+For nonnegative signed integers, we can use the same expression as we did for the round-up method. In fact, since the maximum magnitude of signed integers is smaller than the maximum magnitude of unsigned integers, it is the case that for every divisor $d > 0$ we can find an $N$-bit magic number $m$ such that
+$$ \lfloor \frac{mn}{2^{N - 1 + \ell}}\rfloor = \lfloor \frac{n}{d} \rfloor $$
+
+for all integers $n$ with $0 \leq n \leq 2^N$. Proving this is straightforward using a variation of the proof of theorem 2.
+
+**Theorem 4**: *Let $d$, $m$, $\ell$ be nonnegative integers with $d \neq 0$ and*
+$$ 2^{N - 1 + \ell} \leq d \cdot m < 2^{N - 1 + \ell} + 2^\ell $$
+
+*then $\lfloor \frac{mn}{2^{N + \ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$ for every integer $n$ with $0 \leq n \leq 2^{N-1}$*.
+
+**Proof**: When $n = 0$ the result is trivial. When $n > 0$, we can multiply the inequality by $\frac{n}{d \cdot 2^{N + \ell}}$ to get $\frac{n}{d} \leq \frac{mn}{2^{N + \ell}} < \frac{n}{d} + \frac{1}{d} \cdot \frac{n}{2^N}$. We have $n \leq 2^{N-1}$, so that $\frac{n}{2^N} \leq 1$. It follows that $\frac{n}{d} \leq \frac{mn}{2^{N + \ell}} < \frac{n}{d} + \frac{1}{d}$. By lemma 1, it follows that $\lfloor \frac{mn}{2^{N + \ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$ for all integers $n$ with $0 \leq n \leq 2^{N-1}$.
+
+$\square$
+
+But how we do handle the case where the quotient is negative? In most programming languages, integer division rounds *towards zero*. That means that when the quotient is negative, the expression should be rounded up instead of down.
+
+Another subtlety that we have to handle, is that $m$ is an unsigned number while $n$ is a signed number. Processors generally have instructions to multiply unsigned integers or signed integers, but not to multiply a signed integer by an unsigned one. So we have to figure out how we can evaluate this product.
+
+For now, I will assume that the divisor $d$ is positive. I will address the case where $d$ is negative later -- it will turn out to be quite simple to handle.
+
+
+### Rounding up instead of down
+
+We have the identity $\lfloor \frac{n + d - 1}{d} \rfloor = \lceil \frac{n}{d} \rceil$ when $n$ and $d$ are integers. Using this, we can evaluate $\lceil \frac{mn}{2^{N - 1 + \ell}} \rceil$ as $\lfloor \frac{m(n + d - 1)}{2^{N - 1 + \ell}} \rfloor$.
+
+If $mn$ is not a power of two we have
+$$ 2^{N-1+\ell} < md < 2^{N-1+\ell} + 2^\ell $$
+
+Since $2^{N-1+\ell}$ and $2^{N-1+\ell} + 2^\ell$ are consecutive multiples of $2^\ell$, $md$ cannot be one. So $m$ also cannot be a multiple of $2^\ell$, and for an $N$-bit signed integers $n$, $mn$ can not be a multiple of $2^{N-1+\ell}$, given that $n = -2^{N-1}$ has the highest number of two's in its factorization.
+
+So $\frac{mn}{2^{N-1+\ell}}$ is not an integer and we have
+$$ \lceil \frac{mn}{2^{N - 1 + \ell}} \rceil = \lfloor \frac{mn}{2^{N - 1 + \ell}} \rfloor + 1 $$
+
+when $d$ is not a power of two. This last expression is potentially more efficient to evaluate.
+
+So in practice we want to compute
+$$ \lfloor \frac{mn}{2^{N - 1 + \ell}} \rfloor + 1_{n < 0} $$
+
+when $d$ is not a power of two. An efficient way of adding $1_{n < 0}$ is by subtracting `n >> (N - 1)`. This expression will be $-1$ when $n$ is negative, and $0$ otherwise. By swapping the operands of the subtraction, we can negate the result "for free".
+
+When $d$ is a power of two this will not work, and we need to explicitly negate the result. This can be done in a single instruction on most architectures.
+
+### Computing the product of a signed and an unsigned integer
+
+If we set $\ell = \lceil \log_2(d) \rceil$, the value $m = \lceil \frac{2^{N-1+\ell}}{d} \rceil$ with  is an $N$-bit unsigned integer with the most significant bit set. When $m$ is even, we can use $m' = \frac{m}{2}$ and use
+$$ \frac{mn}{2^{N-1+\ell}} = \frac{m'n}{2^{N-2+\ell}} $$
+
+This is easier to evaluate since we can now simply compute $m'n$ as a signed product.
+
+When $m$ is odd, we do not have this option. Let $m_s$ be the value obtained by interpreting the bits of $m$ (represented as an unsigned integer) as a signed integer. That is, if $m = \sum_{k=0} 2^k m_k$, then
+$$ m_s = -2^{N-1}m_{N-1} + \sum_{k = 0}^{N-2} 2^k m_k $$
+
+So we have $m = m_s + 2^k$ so that
+$$ mn = (m_s + 2^k)n = m_s n + 2^k n$$
+
+That is, we can use a signed product to evaluate $m_s n$, and add $n$ to the high word of the product. The result will be $mn$.
+
+
+### Examples
+
+#### Example 1: Dividing by 7
+
+For a simple example, consider the following function:
+```
+int32_t div7(int32_t n) {
+	return n / 7;
+}
+```
+
+With $N = 32$ we find $\ell = \lceil \log_2(7) \rceil = 3$, $m = \lceil \frac{2^{N - 1 + \ell}}{d} \rceil = 245426702$. This is an odd number, so we can't simplify. Since $m$ is a 32-bit number, we'll have to evaluate the high word of the product `mn_hi` as `mn_signed_hi + n`. Here, `mn_signed_hi` is the product of $n$ and $m'$, and $m'$ is the interpretation of $m$ as a signed word. When we interpret $m$ as a signed number, we get $245426702 - 2^{32} = -1840700269$, so this is what we use in the multiplication, instead of the unsigned value of $m$.
+
+We proceed by shifting right the rest of the bits. We have already shifted the product by $32$ bits, so we need to shift right by $2$ additional bits. Finally, we correct the rounding by adding `n >> 31`.
+
+All in all, we get
+```
+int32_t div7(int32_t n) {
+	int32_t m = -1840700269;
+
+	// evaluate the high word of m * n
+	int32_t mn_signed_hi = ((int64_t)m * n) >> 32;
+	int32_t mn_hi = mn_signed_hi + n;
+
+	// shift remaining bits and correct rounding
+	return (mn_hi >> 2) - (n >> 31);
+}
+```
+
+This results in the following assembly:
+```
+div7:
+	# move n to ecx
+	mov ecx, DWORD PTR [esp+4]
+
+	# move m to eax
+	mov eax, -1840700269
+
+	# move m*n to edx:eax
+	imul ecx
+
+	# add n and store in eax
+	add eax, [edx+ecx]
+
+	# shift right by two and add (n << 31)
+	sar     ecx, 31
+	sar     eax, 2
+	sub     eax, ecx
+	ret
+```
+
+Also, GCC sometimes prefers to use a `lea` instruction instead of a simple addition. This is the only difference between the assembly generated by the two C functions above.
+
+To divide by -7 we can now simply swap the operands of the subtraction in the `return` statement. However, GCC seems to have difficulties generating efficient assembly for this, and the resulting assembly is definitely not equivalent to the assembly that results from compiling `int32_t div7(int32_t n) { return n / -7; }`.
+
+
+#### Example 2: Dividing by 9
+
+Now, consider the following function:
+```
+int32_t div9(int32_t n) {
+	return n / 9;
+}
+```
+
+Setting $\ell = \lceil \log_2(9) \rceil = 4$, we get $m = \lceil \frac{2^{N-1+\ell}}{9} \rceil = 3817748708$. This is even so we can decrease $\ell$ to $3$ and get $m = 1908874354$. This is again even so we can decrease $\ell$ once more to get $2$ and we get $m = 954437177$.
+
+This fits in a signed 32-bit integer and we can proceed as before, except that we can use a simple signed product to evaluate $mn$.
+```
+int32_t div9(int32_t n) {
+	int32_t m = 954437177;
+
+	// evaluate the high word of m * n
+	int32_t mn_hi = ((int64_t)m * n) >> 32;
+
+	// shift remaining bits and correct rounding
+	return (mn_hi >> 2) - (n >> 31);
+}
+```
+
+
+#### Example 3: Dividing by 4096
+
+Consider the following function:
+```
+int32_t div4096(int32_t n) {
+	return n / 4096;
+}
+```
+
+If we divide by a power of two we simply need to add `d - 1` to `n` to fix the rounding. Otherwise, the division is a simple shift:
+```
+int32_t div4096(int32_t) {
+	if (n < 0) {
+		n += 4095;
+	}
+	return n >> 12;
+}
+```
+
+In practice, GCC compiles both versions to the same assembly which uses a `cmovs` instruction (conditional move when the sign bit is not set):
+```
+div4096:
+	# move n to eax
+	mov eax, DWORD PTR [esp+4]
+
+	# add 4095 to eax if it is negative
+	test eax, eax
+	lea edx, [eax+4095]
+	cmovs eax, edx
+
+	# arithmetic shift right by 12 bits
+	# (i.e. signed divide by 4096)
+	sar eax, 12
+	ret
+```
+
+## Addendum
+
+(This section is a work-in-progress.)
+
+During the writing of this last section, I noticed that for some computation (e.g. $d = 3$ for 32-bit signed integers), GCC can simplify the computation while the constant $m$ is odd. That is, the test in this article is too strict. Doing the computations by hand, I came to the conclusion that
+- Let $p$ be $d \cdot (\lceil \frac{2^N}{d} \rceil - 1) + 1$. That is, take the largest number $p$ smaller than $2^N$ that has $\text{mod}_d(p) = d - 1$. For signed integers, this should be the largest number $p$ smaller than or equal to $2^{N - 1}$.
+- Let $m = \lceil \frac{2^{N+\ell}}{d} \rceil$ and $k = dm - 2^{N+\ell}$
+
+Now, if $kp < 2^N$, then $\lfloor \frac{mn}{2^{N+\ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$.
+
+I realize this is highly cryptic and need to spend some effort to explain this and bring it into a more digestable form. The basic idea is to realize that the equality $\lfloor \frac{mn}{2^{N+\ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$ will first fail when $\text{mod}_d(n) = d - 1$, and that if the equality holds for the largest possible $n$ of this form, the equality will hold for all $n$ in the range.
