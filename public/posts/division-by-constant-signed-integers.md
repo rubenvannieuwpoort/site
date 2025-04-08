@@ -3,7 +3,7 @@ title: Division by constant signed integers
 description: Division is a relatively slow operation. When the divisor is constant, the division can be optimized significantly. In the previous post I explored how this can be done for unsigned integers. In this follow-up post, I cover how we can optimize division by constant signed integers.
 date: 2021-01-20
 template: post
-show: true
+show: false
 ---
 
 The code accompanying this article can be found in a [github repository](https://github.com/rubenvannieuwpoort/division-by-constant-integers).

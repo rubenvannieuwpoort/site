@@ -531,15 +531,3 @@ div4096:
 	sar eax, 12
 	ret
 ```
-
-## Addendum
-
-(This section is a work-in-progress.)
-
-During the writing of this last section, I noticed that for some computation (e.g. $d = 3$ for 32-bit signed integers), GCC can simplify the computation while the constant $m$ is odd. That is, the test in this article is too strict. Doing the computations by hand, I came to the conclusion that
-- Let $p$ be $d \cdot (\lceil \frac{2^N}{d} \rceil - 1) + 1$. That is, take the largest number $p$ smaller than $2^N$ that has $\text{mod}_d(p) = d - 1$. For signed integers, this should be the largest number $p$ smaller than or equal to $2^{N - 1}$.
-- Let $m = \lceil \frac{2^{N+\ell}}{d} \rceil$ and $k = dm - 2^{N+\ell}$
-
-Now, if $kp < 2^N$, then $\lfloor \frac{mn}{2^{N+\ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$.
-
-I realize this is highly cryptic and need to spend some effort to explain this and bring it into a more digestable form. The basic idea is to realize that the equality $\lfloor \frac{mn}{2^{N+\ell}} \rfloor = \lfloor \frac{n}{d} \rfloor$ will first fail when $\text{mod}_d(n) = d - 1$, and that if the equality holds for the largest possible $n$ of this form, the equality will hold for all $n$ in the range.
