@@ -54,7 +54,7 @@ These are simple header-only C++ implementations of 32- and 64-bit MCGs and LCGs
 ```
 class MCG32 {
 public:
-	// seed needs to be odd in order to achieve the maximum period
+	// seed needs to be odd for a maximum period
 	MCG(unsigned __int128 seed) : mState(seed | 1) {
 		next();
 	}
@@ -65,7 +65,9 @@ public:
 	}
 
 private:
-	static const __uint128_t multiplier = ((__uint128_t)0xcdc65792ULL << 64) | 0x6766e07328a856f5ULL;
+	static const __uint128_t multiplier =
+	    ((__uint128_t)0xcdc65792ULL << 64) |
+	    0x6766e07328a856f5ULL;
 	unsigned __int128 mState;
 };
 ```
@@ -76,7 +78,7 @@ private:
 ```
 class MCG64 {
 public:
-	// seed needs to be odd in order to achieve the maximum period
+	// seed needs to be odd for a maximum period
 	MCG(unsigned __int128 seed) : mState(seed | 1) {
 		next();
 	}
@@ -87,7 +89,9 @@ public:
 	}
 
 private:
-	static const __uint128_t multiplier = ((__uint128_t)0x2ffd4aa4540b972cULL << 64) | 0x007c03e5caca8a0dULL;
+	static const __uint128_t multiplier =
+	    ((__uint128_t)0x2ffd4aa4540b972cULL << 64) |
+	    0x007c03e5caca8a0dULL;
 	unsigned __int128 mState;
 };
 ```
@@ -98,7 +102,6 @@ private:
 ```
 class LCG32 {
 public:
-	// seed needs to be odd in order to achieve the maximum period
 	MCG(unsigned __int128 seed) : mState(seed) {
 		next();
 	}
@@ -109,7 +112,9 @@ public:
 	}
 
 private:
-	static const __uint128_t multiplier = ((__uint128_t)0xc580caddULL << 64) | 0x754f7336d2eaa27dULL;
+	static const __uint128_t multiplier =
+	    ((__uint128_t)0xc580caddULL << 64) |
+	    0x754f7336d2eaa27dULL;
 	unsigned __int128 mState;
 };
 ```
@@ -120,7 +125,6 @@ private:
 ```
 class LCG64 {
 public:
-	// seed needs to be odd in order to achieve the maximum period
 	MCG(unsigned __int128 seed) : mState(seed) {
 		next();
 	}
@@ -131,7 +135,9 @@ public:
 	}
 
 private:
-	static const __uint128_t multiplier = ((__uint128_t)0x96704a6bb5d2c4fbULL << 64) | 0x3aa645df0540268dULL;
+	static const __uint128_t multiplier = ((__uint128_t)
+	    0x96704a6bb5d2c4fbULL << 64) |
+	    0x3aa645df0540268dULL;
 	unsigned __int128 mState;
 };
 ```
