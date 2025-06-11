@@ -156,7 +156,7 @@ for n := range allIntegers() {
 }
 ```
 
-More importantly, the compiler transform *has full support for `break`, `continue`, `defer`, `goto`, and `return`*. I find this quite impressive! More details can be found in [this discussion on GitHub](https://github.com/golang/go/discussions/56413).
+More importantly, the compiler transform has *full support* for `break`, `continue`, `defer`, `goto`, and `return`. I find this quite impressive! More details can be found in [this discussion on GitHub](https://github.com/golang/go/discussions/56413).
 
 
 ### Haskell: lazyness
