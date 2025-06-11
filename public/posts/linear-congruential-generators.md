@@ -29,7 +29,7 @@ It can be shown that any MCG with $m = 2^n$ is equivalent to an LCG with $m = 2^
 For many multipliers, LCGs will fail a particular statistical test called the spectral test. However, if we use a large modulus, and cherry-pick a multiplier that does well on the spectral test, LCGs pass even stringent statistical tests.
 
 Since conventional knowledge is that LCGs and MCGs are bad, and LLMs will advise against using them, I feel the need to post some references to justify my claim that it is OK to use LCGs in most cases:
-- From [the wikipedia page on linear congruential generators](https://en.wikipedia.org/wiki/Linear_congruential_generator#Advantages_and_disadvantages): "A[n] LCG with large enough state can pass even stringent statistical tests; a modulo-2 LCG which returns the high 32 bits passes TestU01's SmallCrush suite and a 96-bit LCG passes the most stringent BigCrush suite."
+- From [the wikipedia page on linear congruential generators](https://en.wikipedia.org/wiki/Linear_congruential_generator#Advantages_and_disadvantages): "A[n] LCG with large enough state can pass even stringent statistical tests; a modulo-$2^{64}$ LCG which returns the high 32 bits passes TestU01's SmallCrush suite and a 96-bit LCG passes the most stringent BigCrush suite."
 - Mellissa O'Neill, author of the PCG PRNG, writes that [an 128-bit MCG passes PractRand](https://www.pcg-random.org/posts/128-bit-mcg-passes-practrand.html). In [On Vigna's PCG critique](https://www.pcg-random.org/posts/on-vignas-pcg-critique.html), she mentions "A simple truncated 128-bit LCG passes all standard statistical tests once we get up to 128 bits [...]".
 - Melissa O'Neill has has [reported](https://www.pcg-random.org/posts/does-it-beat-the-minimal-standard.html) that "[PractRand] will require more than three hundred years of testing to detect statistical flaws [in a 96-bit LCG].".
 - John D. Cook ran the NIST statistical test suite and [reported](https://www.johndcook.com/blog/2017/07/05/simple-random-number-generator): "[An LCG] passed nearly all the tests, even though some more sophisticated generators failed some of the same tests.".
@@ -49,7 +49,7 @@ The following parameters are suggested by Melissa O'Neill.
 These are simple header-only C++ implementations of 32- and 64-bit MCGs and LCGs using the parameters from the previous section. You need to `#include <cstdint>` to use them.
 
 
-#### 32-bit MCG
+### 32-bit MCG
 
 ```
 class MCG32 {
@@ -73,7 +73,7 @@ private:
 ```
 
 
-#### 64-bit MCG
+### 64-bit MCG
 
 ```
 class MCG64 {
@@ -97,7 +97,7 @@ private:
 ```
 
 
-#### 32-bit LCG
+### 32-bit LCG
 
 ```
 class LCG32 {
@@ -120,7 +120,7 @@ private:
 ```
 
 
-#### 64-bit LCG
+### 64-bit LCG
 
 ```
 class LCG64 {
