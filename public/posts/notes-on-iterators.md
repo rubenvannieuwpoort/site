@@ -162,11 +162,12 @@ More importantly, the compiler transform has *full support* for `break`, `contin
 ### Haskell: lazyness
 
 In Haskell, things are more abstract and we don't have to worry about petty things such as iterators.
+
+< Of course, we have other things to worry about, such as writing Haskell.
+
 ```
 diffs = [1,3..]
 squares = tail . scanl (+) 0 $ diffs
 ```
-
-> Of course, we have other things to worry about, such as writing Haskell code.
 
 Now, `take 10 squares` takes the first 10 squares from this infinite list.
