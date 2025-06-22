@@ -21,20 +21,18 @@ names.forEach(name -> System.out.println(name));
 
 This is wonderfully simple, but without special support you do not have a way to exit the iteration early.
 
-**External** or **pull** iterators implement an iterator object that allows you to "pull" out elements of the container. This way the iteration is controlled from code external to the iterator.
-
-This is probably the more familiar way of iteration. Conceptually, something that can be iterated over is called an **iterable**. It can be iterated over by using an **iterator**.
-
-This is often implemented as some kind of "iterator protocol" that iterables and iterators have to implement. In practice this often means that iterables have to implement a method (e.g. `iterator`) to get an iterator from an iterable. In turn, iterators have to implement a `next` method that returns the next element (or an exception if there is none), and (optionally) some way to check if there are more elements in the iteration (e.g. a `hasNext` method that indicates if there are more elements).
-
-The idiomatic `for` loop is then just syntatic sugar for directly using the iterator protocol. For example, in Java, we can write
+**External** or **pull** iterators implement an iterator object that allows you to "pull" out elements of the container. This way the iteration is controlled from code external to the iterator:
 ```
 for (var name : names) {
 	System.out.println(name);
 }
 ```
 
-which is just syntactic sugar for
+This is the more familiar way of iteration. Conceptually, something that can be iterated over is called an **iterable**. It can be iterated over by using an **iterator**.
+
+This is often implemented as some kind of "iterator protocol" that iterables and iterators have to implement. In practice this often means that iterables have to implement a method (e.g. `iterator`) to get an iterator from an iterable. In turn, iterators have to implement a `next` method that returns the next element (or an exception if there is none), and (optionally) some way to check if there are more elements in the iteration (e.g. a `hasNext` method that indicates if there are more elements).
+
+The idiomatic `for` loop is then just syntatic sugar for directly using the iterator protocol. For example, the example I showed before is just syntactic sugar for
 ```
 for (Iterator iter = names.iterator(); iter.hasNext(); ) {
 	var name = iter.next();
