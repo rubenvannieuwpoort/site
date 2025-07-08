@@ -103,6 +103,10 @@ h3 {
 	padding-bottom: 3px;
 }
 
+h4 {
+	font-weight: 600;
+}
+
 p {
 	margin: 1em 0;
 	overflow-wrap: break-word;
