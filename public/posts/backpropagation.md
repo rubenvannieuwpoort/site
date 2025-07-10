@@ -115,8 +115,20 @@ Activation layers have no parameters.
 
 #### Gradient of the input
 
-Denoting the $i$th element of $\frac{\partial y}{\partial x}$ as $\left( \frac{\partial y}{\partial x} \right)_i$, we have
-$$ \left( \frac{\partial y}{\partial x} \right)_i = f'(x_i) $$
+We have
+$$ \frac{\partial \ell}{\partial x_i} = \sum_{k = 0}^{m - 1} \frac{\partial \ell}{\partial y_k} \frac{\partial y_k}{\partial x_i} $$
+
+and
+$$
+\frac{\partial y_k}{\partial x_i} =
+\begin{cases}
+f'(x_i) & \text{if $k=i$} \\
+0 & \text{otherwise}
+\end{cases}
+$$
+
+So that
+$$ \left(\frac{\partial \ell}{\partial x} \right)_i = \frac{\partial \ell}{\partial y_i} f'(x) $$
 
 
 #### Mean squared error loss function
