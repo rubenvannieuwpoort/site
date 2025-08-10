@@ -3,6 +3,8 @@
 build: install_dependencies
 	rm -rf output
 	billygoblog . -o output
+
+build_server: build
 	makeserver output -o server
 
 install_dependencies:
