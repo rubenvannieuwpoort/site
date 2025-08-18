@@ -50,7 +50,7 @@ If the archive does not have a similar structure and instead has multiple folder
 
 #### 3. Extract the binary to the desired location
 
-Now that that we know where to extract to, it's time to actually extract the thing. The most popular file formats for compressed archives are `.tar.gz` and `.zip`, I will only consider these.
+Now that that we know where to extract to, it's time to actually extract the thing. The most popular file formats for compressed archives are tarballs, which typically have extensions like `.tar`, `.tar.xz` or `.tar.gz`, and zipfiles, which have a `.zip` extension. I will only consider these.
 
 **Notes**
 - Make sure the target folder exists, and you're not extracting into an existing installation.
@@ -58,7 +58,7 @@ Now that that we know where to extract to, it's time to actually extract the thi
 
 For `tar.gz` files, use
 ```
-tar -C <target folder> -xzf <archive>
+tar -C <target folder> -xf <archive>
 ```
 
 For `.zip` files use
