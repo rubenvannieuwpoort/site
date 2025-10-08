@@ -1,2 +1,2 @@
-output/
-server
+build/
+__pycache__/

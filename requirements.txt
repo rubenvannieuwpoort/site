@@ -1,0 +1,5 @@
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+mistune==3.1.4
+PyKaTeX==0.1.1
+pyndakaas==0.0.1
