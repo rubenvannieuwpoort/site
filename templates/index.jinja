@@ -333,11 +333,11 @@
 					<h1 class="masthead-title">Ruben van Nieuwpoort<span>'s blog</span></h1>
 				</header>
 				<div class="content list">
-					{% for metadata in glob('posts/*.md') | sort(attribute='date', reverse=True) %}
-					{% if 'show' in metadata and metadata.show %}
+					{% for post in root.glob('posts/*.md') | sort(attribute='date', reverse=True) %}
+					{% if 'show' in post.front_matter and post.front_matter.show %}
 					<div class="list-item">
-						<h2 class="list-post-title"><a href="{{metadata.path.with_suffix('')}}">{{ metadata.title }}</a></h2>
-						<div class="list-post-date">{{ metadata.date }}</div>
+						<h2 class="list-post-title"><a href="{{post.output_path.with_suffix('')}}">{{ post.front_matter.title }}</a></h2>
+						<div class="list-post-date">{{ post.front_matter.date }}</div>
 					</div>
 					{% endif %}
 					{% endfor %}

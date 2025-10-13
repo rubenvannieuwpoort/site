@@ -1,8 +1,8 @@
 <html>
     <head>
 		<meta charset="utf-8">
-		<meta name="description" content="{{description}}">
-		<title>{{title}}</title>
+		<meta name="description" content="{{front_matter.description}}">
+		<title>{{front_matter.title}}</title>
 		<meta name="viewport" content="width=device-width">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<link rel="stylesheet" type="text/css" href="katex.min.css">
@@ -11,7 +11,7 @@
 	<body>
 		<main>
 			<article>
-<h1>{{title}}</h1>
+<h1>{{front_matter.title}}</h1>
 
 {{body}}
 			</article>
