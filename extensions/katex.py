@@ -6,7 +6,7 @@ from mistune.inline_parser import InlineParser
 from typing import Match
 
 
-BLOCK_MATH_PATTERN = r"\$\$(?P<math_text>.+?)\$\$"
+BLOCK_MATH_PATTERN = r"\$\$(?P<math_text>[\s\S]+?)\$\$"
 INLINE_MATH_PATTERN = r"(?<!\$)\$(?P<math_text>[^$\r\n]+?)\$(?!\$)"
 
 
