@@ -336,7 +336,7 @@
 					{% for post in root.glob('posts/*.md') | sort(attribute='date', reverse=True) %}
 					{% if 'show' in post.front_matter and post.front_matter.show %}
 					<div class="list-item">
-						<h2 class="list-post-title"><a href="{{post.output_path.with_suffix('')}}">{{ post.front_matter.title }}</a></h2>
+						<h2 class="list-post-title"><a href="{{post.rel_output_path.with_suffix('')}}">{{ post.front_matter.title }}</a></h2>
 						<div class="list-post-date">{{ post.front_matter.date }}</div>
 					</div>
 					{% endif %}
