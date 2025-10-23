@@ -16,7 +16,9 @@ class Markdown(Handler):
         return source_path.suffix == '.md'
 
     def transform(self) -> None:
-        self.body = markdown(self.source)
+        body = markdown(self.source)
+        assert isinstance(body, str)
+        self.body = body
 
 
 process_dir(Path('src'), Path('build'))
