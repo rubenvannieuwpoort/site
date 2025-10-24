@@ -333,7 +333,7 @@
 					<h1 class="masthead-title">Ruben van Nieuwpoort<span>'s blog</span></h1>
 				</header>
 				<div class="content list">
-					{% for post in root.glob('posts/*.md') | sort(attribute='date', reverse=True) %}
+					{% for post in root.glob('posts/*.md') | sort(attribute='front_matter.date', reverse=True) %}
 					{% if 'show' in post.front_matter and post.front_matter.show %}
 					<div class="list-item">
 						<h2 class="list-post-title"><a href="{{post.rel_output_path.with_suffix('')}}">{{ post.front_matter.title }}</a></h2>
