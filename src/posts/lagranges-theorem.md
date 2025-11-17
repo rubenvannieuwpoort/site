@@ -1,7 +1,7 @@
 {
     "title": "Lagrange’s theorem",
-    "date": "TODO",
-    "show": false
+    "date": "2020-10-11",
+    "show": true
 }
 
 
@@ -9,11 +9,11 @@ Lagrange’s theorem is a useful theorem in group and number theory. I will stat
 
 **Lagrange’s theorem**: *Suppose that $G$ is a group with a subgroup $S$. Then the order of $S$ divides the order of $G$.*
 
-**Proof**: Label the elements in $S$ as $s_1, s_2, ..., s_n$, with $s_{k_1} =\not s_{k_2}$ whenever $k_1 =\not k_2$. Now consider the set $\{ a s_1, a s_2, ..., a s_n \}$ that is obtained by left-multiplying all the elements in $S$ by some element $a \in G$. Note that this set, which I’ll denote as $aS$, is not necessarily a group since it will not contain the identity element $e$ in case $g^{-1} \in \not S$. I now claim that
+**Proof**: Label the elements in $S$ as $s_1, s_2, ..., s_n$, with $s_{k_1} \neq s_{k_2}$ whenever $k_1 \neq k_2$. Now consider the set $\{ a s_1, a s_2, ..., a s_n \}$ that is obtained by left-multiplying all the elements in $S$ by some element $a \in G$. Note that this set, which I’ll denote as $aS$, is not necessarily a group since it will not contain the identity element $e$ in case $g^{-1} \not \in S$. I now claim that
 1. For every $a \in G$, $aS$ contains the same number of elements as $S$
 2. For every $a, b \in G$, where have either $aS = bS$ or $aS \cap bS = \emptyset$
 
-The first claim is easy to see, since $s_{k_1} =\not s_{k_2}$ implies $a s_{k_1} =\not a s_{k_2}$. For the second claim, suppose that $a s_{k_1} = b s_{k_2}$ with $k_1 =\not k_2$. It follows that $a^{-1} b = s_{k_1} s_{k_2}^{-1}$. Since $s_{k_1} s_{k_2}^{-1} \in S$, this is impossible if $a^{-1} b \in\not S$, so in this case we have $aS \cap bS = \emptyset$. Otherwise, we have $a s_{k_1} s_{k_2}^{-1} = b$. It follows that $a S = a (s_{k_1} s_{k_2}^{-1} S) = (a s_{k_1} s_{k_2}^{-1}) S= b S$. Note that $s_{k_1} s_{k_2}^{-1} S = S$, since $s_{k_1}, s_{k_2}^{-1} \in S$, and multiplication of a group by an element in the group just permutes the elements.
+The first claim is easy to see, since $s_{k_1} \neq s_{k_2}$ implies $a s_{k_1} \neq a s_{k_2}$. For the second claim, suppose that $a s_{k_1} = b s_{k_2}$ with $k_1 \neq k_2$. It follows that $a^{-1} b = s_{k_1} s_{k_2}^{-1}$. Since $s_{k_1} s_{k_2}^{-1} \in S$, this is impossible if $a^{-1} b \not\in S$, so in this case we have $aS \cap bS = \emptyset$. Otherwise, we have $a s_{k_1} s_{k_2}^{-1} = b$. It follows that $a S = a (s_{k_1} s_{k_2}^{-1} S) = (a s_{k_1} s_{k_2}^{-1}) S= b S$. Note that $s_{k_1} s_{k_2}^{-1} S = S$, since $s_{k_1}, s_{k_2}^{-1} \in S$, and multiplication of a group by an element in the group just permutes the elements.
 
 We can conclude that we can divide $G$ in a number of sets with no overlap, all with $n$ number of elements. So $n$ must divide the order in $G$. $\square$
 

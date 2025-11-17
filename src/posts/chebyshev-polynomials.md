@@ -130,6 +130,8 @@ $$ T_{n + 1}(x) = 2x T_n(x) - T_{n - 1}(x) $$
 
 ## Approximation with Chebyshev polynomials
 
+TODO
+
 
 ## References
 

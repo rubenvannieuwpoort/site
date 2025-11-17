@@ -1,7 +1,7 @@
 {
     "title": "Bernoulli numbers",
-    "date": "TODO",
-    "show": false
+    "date": "2023-04-15",
+    "show": true
 }
 
 
@@ -158,5 +158,7 @@ Setting $d = 1$ we can find the coefficients $c_{1, 1}, c_{1, 2}$ of $p_1$. We g
 
 In the same way we can find the coefficients of $p_3$: $c_{3, 1} = 0, c_{3, 2} = \frac{1}{4}, c_{3, 3} = -\frac{1}{2}, c_{3, 4} = \frac{1}{4}$. So $\sum_{k = 0}^{n - 1} k^3 = \frac{1}{4}n^2 - \frac{1}{2}n^3 + \frac{1}{4} n^4$.
 
-Now, we can see that $p_3(n) = \frac{1}{4}n^2 - \frac{1}{2}n^3 + \frac{1}{4} n^4 = (-\frac{1}{2}n^2 + \frac{1}{2}n)^2 = (p_2(n))^2$. So it follows that
+Now, we can see $p_3(n) = \frac{1}{4}n^2 - \frac{1}{2}n^3 + \frac{1}{4} n^4 = (-\frac{1}{2}n^2 + \frac{1}{2}n)^2 = (p_2(n))^2$.
+
+So it follows that
 $$ \sum_{k = 0}^{n - 1} k^3 = \left( \sum_{k = 0}^{n - 1} k \right)^2 $$

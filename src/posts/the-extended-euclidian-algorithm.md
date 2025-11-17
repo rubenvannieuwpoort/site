@@ -1,7 +1,7 @@
 {
     "title": "The extended Euclidian algorithm",
-    "date": "TODO",
-    "show": false
+    "date": "2020-04-05",
+    "show": true
 }
 
 

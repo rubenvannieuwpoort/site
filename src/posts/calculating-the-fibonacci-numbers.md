@@ -1,7 +1,8 @@
 {
     "title": "Calculating the Fibonacci numbers",
     "description": "I optimize the computation of the nth Fibonacci number in Python.",
-    "date": "2023-02-03"
+    "date": "2023-02-03",
+    "show": true
 }
 
 The *Fibonacci sequence* is defined as the sequence that satisfies the following properties:

@@ -1,7 +1,7 @@
 {
     "title": "Heapsort",
-    "date": "TODO",
-    "show": false
+    "date": "2021-01-20",
+    "show": true
 }
 
 

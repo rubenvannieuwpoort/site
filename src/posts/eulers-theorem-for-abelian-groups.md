@@ -1,7 +1,7 @@
 {
     "title": "Euler’s theorem for abelian groups",
-    "date": "TODO",
-    "show": false
+    "date": "2022-03-01",
+    "show": true
 }
 
 

@@ -1,6 +1,6 @@
 {
     "title": "The normal equation",
-    "date": "TODO",
+    "date": "2019-05-7",
     "show": false
 }
 
@@ -37,4 +37,3 @@ $$ A^\top A \textbf{x} = A^\top \textbf{y} $$
 which is the normal equation. This is a square linear system of size $m \times m$. It follows that this system has a unique solution whenever $\det(A^\top A) = \not 0$.
 
 An interesting consideration is what happens when $m < n$. This is called the *underdetermined* linear system, since there are typically an infinite number of solutions (so the solution is not uniquely determined). In this case, one might try to find try to find a solution $x$ that is minimal with respect to some norm (often the 2-norm). This is a topic for another post.
-{% endkatexmm %}

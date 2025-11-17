@@ -1,7 +1,7 @@
 {
     "title": "Huffman coding",
-    "date": "TODO",
-    "show": false
+    "date": "2020-10-10",
+    "show": true
 }
 
 

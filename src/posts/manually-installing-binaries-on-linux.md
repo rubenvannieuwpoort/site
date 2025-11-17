@@ -1,6 +1,5 @@
 {
     "title": "Manually installing binaries on Linux",
-    "date": "TODO",
     "date": "2025-08-10",
     "show": true
 }

@@ -1,6 +1,6 @@
 {
     "title": "Computing discrepancy in linear time",
-    "date": "TODO",
+    "date": "2021-10-04",
     "show": false
 }
 

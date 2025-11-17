@@ -1,7 +1,7 @@
 {
     "title": "Newton’s method",
-    "date": "TODO",
-    "show": false
+    "date": "2022-05-24",
+    "show": true
 }
 
 

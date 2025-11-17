@@ -1,7 +1,7 @@
 {
     "title": "The Euclidian algorithm",
-    "date": "TODO",
-    "show": false
+    "date": "2019-07-04",
+    "show": true
 }
 
 

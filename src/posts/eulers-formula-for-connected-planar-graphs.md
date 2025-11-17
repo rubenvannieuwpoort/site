@@ -1,7 +1,7 @@
 {
     "title": "Euler’s formula for connected planar graphs",
-    "date": "TODO",
-    "show": false
+    "date": "2019-12-12",
+    "show": true
 }
 
 
