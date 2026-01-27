@@ -2,7 +2,7 @@
     "title": "The Fowler–Noll–Vo hash",
     "description": "A fast, simple, and effective hash function.",
     "date": "2022-03-11",
-    "show": true
+    "show": false
 }
 
 

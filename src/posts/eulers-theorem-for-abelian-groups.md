@@ -23,4 +23,4 @@ As a corollary, we can now easily prove *Fermat’s little theorem*, which is of
 $$ n^{p - 1} \equiv 1 \pmod{p}$$
 
 **Proof**: The integers $1, 2, ..., p - 1$ form a commutative group of order $p - 1$ under multiplication modulo $p$.
-$square$
+$\square$

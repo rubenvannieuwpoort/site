@@ -19,9 +19,9 @@ We can conclude that we can divide $G$ in a number of sets with no overlap, all 
 
 As a corollary, we can now easily prove Euler’s theorem.
 
-**Euler’s theorem**: *Suppose that $g$ is an element of the group $G$, which has order $n$. Then
+**Euler’s theorem**: *Suppose that $g$ is an element of the group $G$, which has order $n$. Then*
 $$g^{n} = e$$
-where $e$ is the identity element.*
+*where $e$ is the identity element.*
 
 **Proof**: Consider the sequence $e, g, g^2, ...$. Suppose that $g^m$ is the first element that occurs earlier in the sequence. Suppose that $g^m = g^{m'}$ for some $m' < m$. Then $g^{m - m'} = e$. If $m' > 0$ this is a contradiction, since in this case $m - m' < m$, but $g^{m - m'} = e$ occurs earlier in the sequence. So it follows that $m' = 0$ and $g^m = e$. Now $\{ e, g, g^2, ..., g^{m - 1} \}$ is a subgroup of $G$ with order $m$. By Lagrange’s theorem, we have that $m$ is a divisor of $n$, so $\frac{n}{m}$ is a positive integer number. Now we have
 $$g^{n} = (g^m)^{\frac{n}{m}} = e^{\frac{n}{m}} = e$$
