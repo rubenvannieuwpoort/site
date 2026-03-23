@@ -126,9 +126,15 @@ This means that the Greville abscissae are suitable as a standard choice for int
 ### References
 
 [1] C. De Boor. Splines as Linear Combinations of B-splines. A Survey.
+
 [2] Carl de Boor. On calculating with B-splines.
+
 [3] Carl de Boor. B(asic)-Spline Basics.
+
 [4] H. B. Curry and Schoenberg I. J. On spline distributions and their limits: The Pólya distribution functions.
+
 [5] H. B. Curry and Schoenberg I. J. On Pólya frequency functions IV: The fundamental spline functions and their limits.
+
 [6] Tomas Sauer. Splines in Industrial Applications.
+
 [7] Les Piegl and Wayne Tiller. The NURBS Book.

@@ -1,7 +1,7 @@
 {
     "title": "Calculating the pseudoinverse",
     "date": "2020-06-08",
-    "show": true
+    "show": false
 }
 
 

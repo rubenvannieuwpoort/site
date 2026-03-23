@@ -2,7 +2,7 @@
     "title": "The singular value decomposition",
     "description": "The singular value decomposition is a matrix decomposition with many applications, one of them being principal component analysis. In this article I use the spectral theorem for Hermitian matrices to easily prove the existence of the singular value decomposition.",
     "date": "2020-01-26",
-    "show": true
+    "show": false
 }
 
 
