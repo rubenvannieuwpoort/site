@@ -95,7 +95,9 @@ nav a, nav a:visited {
 }
 
 main {
-	max-width: 650px;
+    max-width: 100%;
+	width: 650px;
+    box-sizing: border-box;
 	margin: 0 auto;
     padding: 1rem 20px 3rem 20px;
     flex: 1;
