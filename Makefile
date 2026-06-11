@@ -2,7 +2,7 @@
 
 build:
 	rm -rf build
-	python build.py
+	python3 build.py
 
 deploy: build
 	ssh homeserver 'rm -rf /home/ruben/www.temp'
